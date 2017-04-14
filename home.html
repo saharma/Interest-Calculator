@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+
+input[type=number], select {
+    width: 300%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+
+input[type=button], [type=reset], [type=submit], #cmpndInt, #simpleInt {
+    width: 20em;
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+input[type=button]:hover {
+    background-color: #45a049;
+}
+
+input[type=submit]:hover {
+    background-color: #45a049;
+}
+
+input[type=reset]:hover {
+    background-color: #45a049;
+}
+
+div {
+       display: table-row;
+
+            }
+
+label {
+	display: table-cell;
+	font-family: verdana;
+
+            }
+
+input {
+	display: table-cell;
+            }
+
+
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+    $("#cmpndInt").click(function(){
+        $("#simple").hide();
+        $("#interestType").hide();
+        $("#cmpndPY").show();
+        $("#cmpnd").show();
+        $("#interestCalculator").show();
+        $("#simpleInt").hide();
+    });
+    $("#simpleInt").click(function(){
+        $("#cmpnd").hide();
+        $("#interestType").hide();
+        $("#cmpndPY").hide();
+        $("#simple").show();
+        $("#interestCalculator").show();
+        $("#cmpndInt").hide();
+    });
+    $("#reset").click(function(){
+        $("#interestCalculator").hide();
+        $("#cmpndInt").show();
+        $("#simpleInt").show();
+        $("#simple").hide();
+        $("#cmpnd").hide();
+        $("#interestType").show();
+        $("#interestCalculator input").each(function(){
+            this.value ="";
+        });
+    });
+ });   
+</script>
+<title> Interest Calculator </title>
+</head>
+<body>
+
+<div><label id="interestType"> Select Interest Type </label><br>
+<button id="cmpndInt">Compound Interest</button><br>
+<button id="simpleInt">Simple Interest</button>
+</div>
+
+<div style="display: none" id="interestCalculator">
+<div><Label> Principal</Label>
+<input type="number" id="p"><br></div>
+
+<div><Label> Rate of Interest (%)</Label>
+<input type="number" id="r"><br></div>
+
+<div><Label> Time in years</Label>
+<input type="number" id="t"><br></div>
+
+<!-- values corresponding to number of compoundsons per year -->
+<div id="cmpndPY"><Label> Compounds per year</Label>
+<input type="number" id="n"><br></div>
+
+<button type="submit" onclick="calculate()">Calculate Interest</button><br>
+
+<button type="reset" id="reset" onclick="resetText()">Reset</button>
+</div>
+
+<p hidden="hidden" id='simple'> Calculating Simple Interest...</p>
+<p hidden="hidden" id='cmpnd'> Calculating Compound Interest...</p>
+
+</body>
+<script>	
+
+	
+		//A = p*(1+(r/n))^nt
+	function calculate(){
+
+
+		p = document.getElementById("p").value;
+		n = document.getElementById("n").value; 
+		t = document.getElementById("t").value;
+		r = document.getElementById("r").value;
+		simpleInterest = document.getElementById("simple");
+		compoundInterest = document.getElementById("cmpnd");
+
+		//rate is in percentage so multiply n by 100
+		//A = p*(1+(r/n))^nt
+
+
+		A = (p* Math.pow((1 + (r/(n*100))), (n*t)));
+		//round to two decimals
+
+        //Compound Interest
+        if (A != 0) {
+        compoundInterest.innerHTML = "The Total Amount is " + A.toFixed(2);
+
+        compoundInterest.innerHTML += "<br> The Compound Interest is " + (A.toFixed(2) -p).toFixed(2);
+        } else {
+
+        compoundInterest.innerHTML = "Please fill all fields";
+        }
+		
+        I = p * (r/100) * t;
+
+
+		//Simple Interest
+        if (I != 0) {
+
+        simpleInterest.innerHTML = "The Simple Interest is " + I.toFixed(2); 
+        } else {
+
+        simpleInterest.innerHTML = "Please fill all fields";
+        }
+		
+
+	}
+
+    function resetText(){
+
+        simpleInterest = document.getElementById("simple");
+        compoundInterest = document.getElementById("cmpnd");
+        compoundInterest.innerHTML = "Calculating Compound Interest...";
+        simpleInterest.innerHTML = "Calculating Simple Interest...";
+    }
+
+
+</script>
+</html>
